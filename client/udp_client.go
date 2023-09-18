@@ -2,10 +2,11 @@ package udp_client
 
 import (
 	"encoding/json"
-	"go_mutateur/src/udp"
 	"log"
 	"net"
 	"sync"
+
+	"github.com/Eznopot/udp"
 )
 
 var conn *net.UDPConn
@@ -15,10 +16,14 @@ var once sync.Once
 // The function `CreateConnection` creates a new UDP connection and sends a handshake message.
 //
 // Args:
-//   address (string): The "address" parameter is the IP address or hostname of the server you want to
+//
+//	address (string): The "address" parameter is the IP address or hostname of the server you want to
+//
 // connect to. The "port" parameter is the port number on which the server is listening for UDP
 // connections.
-//   port (string): The "port" parameter is the port number on which the UDP connection will be
+//
+//	port (string): The "port" parameter is the port number on which the UDP connection will be
+//
 // established. It is a string representing the port number.
 func CreateConnection(address, port string) *net.UDPConn {
 	once.Do(func() {
@@ -54,11 +59,14 @@ func CreateConnection(address, port string) *net.UDPConn {
 // value indicating whether the connection should be closed or not.
 //
 // Args:
-//   data (string): The parameter "data" is a string that represents the packet received from the
+//
+//	data (string): The parameter "data" is a string that represents the packet received from the
+//
 // client.
 //
 // Returns:
-//   The function `clientPacketSystemHandler` returns an integer value.
+//
+//	The function `clientPacketSystemHandler` returns an integer value.
 func clientPacketSystemHandler(data string) int {
 	switch data := data; data {
 	case "close":
@@ -94,9 +102,13 @@ func readFromConn() (udp.Packet, error) {
 // function until the connection is closed.
 //
 // Args:
-//   wg: The "wg" parameter is a pointer to a sync.WaitGroup. It is used to synchronize the completion
+//
+//	wg: The "wg" parameter is a pointer to a sync.WaitGroup. It is used to synchronize the completion
+//
 // of multiple goroutines.
-//   handler: The "handler" parameter is a function that takes a single argument of type "udp.Packet".
+//
+//	handler: The "handler" parameter is a function that takes a single argument of type "udp.Packet".
+//
 // This function will be called with each received packet that is not of type "system".
 func Receive(wg *sync.WaitGroup, handler func(udp.Packet)) {
 	for !isConnClose {
