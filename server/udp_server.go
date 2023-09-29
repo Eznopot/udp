@@ -3,10 +3,11 @@ package udp_server
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/Eznopot/udp"
 	"log"
 	"net"
 	"sync"
+
+	"github.com/Eznopot/udp"
 )
 
 var instance *net.PacketConn
@@ -239,7 +240,9 @@ func SendToClient(str, packetType string, index int) {
 	if err != nil {
 		log.Fatal("error on json:", err.Error())
 	}
-	(*instance).WriteTo(res, *(addrs[index]))
+	if addrs[index] != nil {
+		(*instance).WriteTo(res, *(addrs[index]))
+	}
 }
 
 // The function GetAllClientInfo returns a list of strings containing the addresses of all clients.
