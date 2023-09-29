@@ -227,7 +227,7 @@ func SendToAllExcludingItselfClient(str, packetType string, addr *net.Addr) {
 //	index (int): The "index" parameter is an integer that represents the index of the address in the
 //
 // "addrs" slice. It is used to determine the address to which the packet should be sent.
-func SendToClient(str, packetType string, index int) {
+func SendToClientByIndex(str, packetType string, index int) {
 	if instance == nil {
 		log.Fatal("instance of UDP server is null")
 		return
@@ -242,6 +242,24 @@ func SendToClient(str, packetType string, index int) {
 	}
 	if addrs[index] != nil {
 		(*instance).WriteTo(res, *(addrs[index]))
+	}
+}
+
+func SendToClientByAddress(str, packetType string, addr *net.Addr) {
+	if instance == nil {
+		log.Fatal("instance of UDP server is null")
+		return
+	}
+	toSend := udp.Packet{
+		Type: packetType,
+		Data: str,
+	}
+	res, err := json.Marshal(toSend)
+	if err != nil {
+		log.Fatal("error on json:", err.Error())
+	}
+	if addr != nil {
+		(*instance).WriteTo(res, *(addr))
 	}
 }
 

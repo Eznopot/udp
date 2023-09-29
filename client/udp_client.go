@@ -144,3 +144,16 @@ func CloseConnection() {
 	isConnClose = true
 	defer conn.Close()
 }
+
+// The function sends a packet to a server using UDP protocol after converting it to JSON format.
+func SendToServer(str, packetType string) {
+	packet := udp.Packet{
+		Data: str,
+		Type: packetType,
+	}
+	bytes, err := json.Marshal(packet)
+	if err != nil {
+		log.Fatal("error on json:", err.Error())
+	}
+	conn.Write(bytes)
+}
